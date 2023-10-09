@@ -29,8 +29,12 @@ import pyLDAvis.gensim_models
 #### app ####
 def app():
 
-    st.title('Estimate topic of a piece of text')
+    st.title('Estimate topic for drug of your choice')
 
+    # pulldown menu of drugs
+    # user choose name of drug
+    # display description
+    # display topic probability
     
 
 
