@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit import components
 
 #### functions ####
 
@@ -6,11 +7,11 @@ import streamlit as st
 #### app ####
 def app():
 
-    st.title('Visualize a pretrained Topic Model112323 blahblahzz')
+    st.title('Visualize a pretrained Topic Model (LDA model)')
 
-    agree = st.checkbox('I agree')
-    if agree:
-        st.write('Great!')
+    with open('./models/vis4.html', 'r') as f:
+        html_string = f.read()
+    components.v1.html(html_string, width=1300, height=800, scrolling=False)
 
 
 if __name__ == '__main__':
