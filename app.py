@@ -7,8 +7,8 @@ from pages import visualize_model, get_text_topic_estimation
 app = MultiPage()
 
 # Add app pages
-app.add_page('Visualize topic distribution model (LDA model)', visualize_model.app)
-app.add_page('Topic estimation', get_text_topic_estimation.app)
+app.add_page('Visualize pretrained model', visualize_model.app)
+app.add_page('Train your own model', get_text_topic_estimation.app)
 
 # Main app
 app.run()

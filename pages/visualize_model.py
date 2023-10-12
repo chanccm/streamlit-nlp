@@ -1,3 +1,7 @@
+# this page displays trained LDA model
+# allow user to see list of medications in specific topic
+
+
 import streamlit as st
 from streamlit import components
 import pandas as pd
@@ -7,9 +11,11 @@ from gensim import corpora, models
 
 #### variables ####
 source_data_path = '/Users/carmen/Documents/machine_learning_exercises/streamlit_app/data/drug_names_kaggle_TASK.xlsx'
-lda_saved_model_path = '/Users/carmen/Documents/machine_learning_exercises/streamlit_app/models/lda4.model'
-corpora_saved_path = '/Users/carmen/Documents/machine_learning_exercises/streamlit_app/models/lda4_corpus'
-topic_count = 4
+lda_saved_model_path = '/Users/carmen/Documents/machine_learning_exercises/streamlit_app/models/lda5.model'
+corpora_saved_path = '/Users/carmen/Documents/machine_learning_exercises/streamlit_app/models/lda5_corpus'
+visualization_path = '/Users/carmen/Documents/machine_learning_exercises/streamlit_app/models/vis5.html'
+topic_count = 5
+
 
 #### functions ####
 def get_medication_name(text):
@@ -19,10 +25,19 @@ def get_medication_name(text):
     
     return name
 
+def get_first_2_sentences(text):
+
+    first_2_sentences = '. '.join(text.split('.')[:2])
+
+    return first_2_sentences
+
 def modify_df(df, list_topic_est):
 
     # add column for medication name
     df['medication_name'] = df['Introduction'].apply(lambda x: get_medication_name(x))
+
+    # add short summary
+    df['short_summary'] = df['Introduction'].apply(lambda x: get_first_2_sentences(x))
 
     # add in topic estimation column
     df['topic_estimation'] = list_topic_est
@@ -41,23 +56,32 @@ def modify_df(df, list_topic_est):
 
     return df
 
+def get_df_each_topic(df, topic_count):
+
+    list_df = []
+    for i in range(topic_count):
+        name_df = 'df_topic' + str(i)
+        column = 'topic' + str(i)
+        name_df = df[df[column] > 0.9]
+        list_df.append(name_df)
+
+    return list_df
+
 
 
 #### app ####
 def app():
 
-    st.title('Look up relevant drugs')
-    st.write('Topic Model (LDA model) trained on drug descriptions')
+    st.title('Information on medications')
 
-    with open('./models/vis4.html', 'r') as f:
+    ## display trained LDA model ##
+    st.header('Topic Model (LDA) trained on drug descriptions text')
+
+    with open(visualization_path, 'r') as f:
         html_string = f.read()
     components.v1.html(html_string, width=1300, height=800, scrolling=False)
 
-    # pulldown menu of drugs
-    # user choose name of drug
-    # display description
-    # display topic probability
-
+    ## Lists of medications under each specific topic
     # load model
     lda_fromload = models.LdaModel.load(lda_saved_model_path)
     lda_corpus = corpora.MmCorpus(corpora_saved_path)
@@ -66,7 +90,7 @@ def app():
     df = pd.read_excel(source_data_path,
                         header = 1,
                         usecols = [1])
-    
+   
     list_topic_estimation = []
     for i in range(len(lda_corpus)):   
         topic_estimation = lda_fromload.get_document_topics(lda_corpus[i])
@@ -74,8 +98,37 @@ def app():
 
     df = modify_df(df, list_topic_estimation)
 
-    text = str(df.iloc[1].values)
-    st.write(text)
+    list_df = get_df_each_topic(df, topic_count)
+
+    ## User select which group of medicine to look into ##
+
+    st.header('Look into each group of medications in detail')
+    st.subheader('Based on word choices, the medications are grouped into 5 topics')
+    st.write('Topic 1 describes medicines used to treat allergic symptoms involving the airway, digestive tract')
+    st.write('Topic 2 describes anti-bacterial and antibiotics for the airway, and also some are blood cholesterol-lowering medicines.')             
+    st.write('Topic 3 are anti-bacterial and antibiotics used for treating acne, and some antifungal medications.')
+    st.write('Topic 4 describes drugs used to treat high blood pressure, heart conditions, and also describes drugs used to treat mental disorders.')
+    st.write('Topic 5 consists of antibiotics to treat infections in the body, anti-inflammatory and pain medications')
+    st.write('')
+
+    list_topics = ['Topic 1', 'Topic 2', 'Topic 3', 'Topic 4', 'Topic 5']
+    topic_of_interest = st.selectbox('Look for medications that predominantly belong to 1 of the topics:',
+                                     list_topics)
+    st.write('Medications that are predominantly ', topic_of_interest)
+    
+    map_topic_df = {'Topic 1': list_df[0],
+                    'Topic 2': list_df[1],
+                    'Topic 3': list_df[2],
+                    'Topic 4': list_df[3],
+                    'Topic 5': list_df[4]}
+
+    list_toshow = map_topic_df[topic_of_interest]['short_summary'].tolist()
+    for i in list_toshow:
+        st.markdown("- " + i)
+
+    
+
+
 
     
     

@@ -38,8 +38,8 @@ class MultiPage:
 
             st.write(
                 '''
-                # NLP
-                - Help with optimization tasks
+                # Natural Language Processing
+                - sample usages
                 '''
             )
 
