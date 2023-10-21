@@ -104,11 +104,11 @@ def app():
 
     st.header('Look into each group of medications in detail')
     st.subheader('Based on word choices, the medications are grouped into 5 topics')
-    st.write('Topic 1 describes medicines used to treat allergic symptoms involving the airway, digestive tract')
-    st.write('Topic 2 describes anti-bacterial and antibiotics for the airway, and also some are blood cholesterol-lowering medicines.')             
-    st.write('Topic 3 are anti-bacterial and antibiotics used for treating acne, and some antifungal medications.')
-    st.write('Topic 4 describes drugs used to treat high blood pressure, heart conditions, and also describes drugs used to treat mental disorders.')
-    st.write('Topic 5 consists of antibiotics to treat infections in the body, anti-inflammatory and pain medications')
+    st.write('Topic 1 mainly describes anti-bacterial and antibiotics for the body, and also blood cholesterol-lowering medicines.')
+    st.write('Topic 2 mainly describes drugs used to treat high blood pressure, heart conditions, and also describes drugs used to treat mental disorders.')             
+    st.write('Topic 3 mainly describes anti-coagulants to prevent or treat heart attack and stroke, and other heart conditions.')
+    st.write('Topic 4 is a mix of drugs that treat digestive tract symptoms, acne, skin infections, and also pain medications.')
+    st.write('Topic 5 mainly describes anti-bacterial and antibiotics used for airway infections and allergies, and some antifungal medications.')
     st.write('')
 
     list_topics = ['Topic 1', 'Topic 2', 'Topic 3', 'Topic 4', 'Topic 5']
