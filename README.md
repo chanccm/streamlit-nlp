@@ -14,6 +14,7 @@ At root directory, run app by typing
 ## Requirements
 
 Python libraries listed in requirements.txt file.
+
 Also need to download nltk libraries:
 1. WordNet - lexical database of English, for lemmatization step in text preprocessing
 2. Stopwords - for removing stop words during text preprocessing
