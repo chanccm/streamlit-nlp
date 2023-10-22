@@ -13,7 +13,7 @@ At root directory, run app by typing
 
 ## Requirements
 
-Python libraries listed in requirements.txt file. \n
+Python libraries listed in requirements.txt file. 
 
 Also need to download nltk libraries:
 1. WordNet - lexical database of English, for lemmatization step in text preprocessing
